@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-@author: 通識中心 施孟賢
-"""
+
 import requests
 from bs4 import BeautifulSoup
 
