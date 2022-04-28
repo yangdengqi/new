@@ -1,45 +1,53 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Apr  9 21:30:55 2022
-
-@author: 楊登棋
+@author: 通識中心 施孟賢
 """
-from nltk.corpus.reader import PlaintextCorpusReader
-from nltk.probability import FreqDist
+import requests
+from bs4 import BeautifulSoup
 
-import urllib
-file = urllib.request.urlopen(url="https://raw.githubusercontent.com/stopwords-iso/stopwords-zh/master/stopwords-zh.txt")
-stopwords = file.read().decode("utf8").split()
-#print(stopword)
+#pip install jieba
+#import jieba.posseg # https://github.com/fxsjy/jieba
 
-from string import printable
-n=300
+def singer_scraping(url):
+    articles = []
+    r = requests.get(url=URL1)
+    soup = BeautifulSoup(r.text, "lxml")
+    tag_divs = soup.find_all("div", class_="r-ent")
+    for tag in tag_divs:
+        if tag.find("a"):
+            href = tag.find("a")["href"]
+            title = tag.find("a").text
+            
+            r2=requests.get(url="http://ptt.cc"+href, cookies={"over18":"1"})
+            soup2 = BeautifulSoup(r2.text, "lxml")
 
-quick_dir = "quick/"
-pcr = PlaintextCorpusReader(root=quick_dir, fileids=".*\.txt")
-fd = FreqDist(samples=pcr.words())
-quick_words = [word for word,freq in fd.most_common(n=n) if word not in stopwords and word[0] not in printable]
+# New script to add date information of the PTT article
+            meta_spans = soup2.find_all("span", class_="article-meta-value")
+            
+            text = "\n".join(soup2.text.split("\n"))
+            articles.append({"title":title, "href":href, "text":text})
+    return articles
 
-slow_dir = "slow/"
-pcr = PlaintextCorpusReader(root=slow_dir, fileids=".*\.txt")
-fd = FreqDist(samples=pcr.words())
-slow_words = [word for word,freq in fd.most_common(n=n) if word not in stopwords and word[0] not in printable]
+#pip install jieba
+import jieba.posseg # https://github.com/fxsjy/jieba
+import time
 
-print(quick_dir)
-print([word for word in quick_words if word not in slow_words])
+URL1 = ["https://www.appleofmyeye.com.tw/geshou/dalunan-all-all.htm",
+        "https://www.appleofmyeye.com.tw/geshou/dalunv-all-all.htm",
+        "https://www.appleofmyeye.com.tw/geshou/daluzuhe-all-all.htm",
+        "https://www.appleofmyeye.com.tw/geshou/gangtainan-all-all.htm",
+        "https://www.appleofmyeye.com.tw/geshou/gangtainv-all-all.htm",
+        "https://www.appleofmyeye.com.tw/geshou/gangtaizuhe-all-all.htm"]
 
-print(slow_dir)
-print([word for word in slow_words if word not in quick_words])
-
-#作快歌跟慢歌的字詞相關性
-
-from gensim.models import Word2Vec
-from gensim.models.word2vec import PathLineSentences
-corpus = PathLineSentences(quick_dir)#"quick")
-corpus = PathLineSentences(slow_dir)#"slow")
-
-model = Word2Vec(sentences=corpus, vector_size=100, window=5, min_count=1, workers=4)
-print(model.wv.most_similar(positive=['快樂',"歡樂"], negative=['悲傷']))
-
-#作歌詞的類比
-
+for www in URL1:
+    articles = singer_scraping(url=URL)
+    
+    for article in articles:
+        filename = article["href"].split("/")[-1]
+       
+            
+        with open(file="stopword.txt", mode="w", encoding="utf8") as file1:
+            tagged_words = jieba.posseg.cut(article["text"])
+            file1.write(" ".join(tagged_words))
+            print(tagged_words)  
+    time.sleep(3)
