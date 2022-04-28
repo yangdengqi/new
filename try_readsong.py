@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.options import Options
 #pip install jieba
 #import jieba.posseg # https://github.com/fxsjy/jieba
 
-def ptt_scraping(url):
+def song_scraping(url):
     articles = []
     r1 = requests.get(url=URL2)
     options = Options()
@@ -41,6 +41,8 @@ URL1 = ["https://www.appleofmyeye.com.tw/geshou/dalunan-all-all.htm",
         "https://www.appleofmyeye.com.tw/geshou/gangtainv-all-all.htm",
         "https://www.appleofmyeye.com.tw/geshou/gangtaizuhe-all-all.htm"]
 
+#全部歌手跑完跑到上面列表
+
 for www in URL1:
     r = requests.get(url=www)
     options = Options()
@@ -53,12 +55,12 @@ for www in URL1:
                 URL2="https://www.appleofmyeye.com.tw/"+href
                 print("URL2:",URL2)
                 
-                articles = ptt_scraping(url=URL2)
+                articles = song_scraping(url=URL2)
                 #print(articles)
                 
                 for article in articles:    
                 
-                    filename = article["song"]
+                    filename = article["song"].split("/")[-1]
                     #print(filename)
                     tagged_words = jieba.posseg.cut(article["text"])
                     words = [word for word, pos in tagged_words]
