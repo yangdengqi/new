@@ -60,45 +60,69 @@ for www in URL1:
                 
                 for article in articles:    
                 
-                    filename = article["song"].split("/")[-1]
+                    filename = article["song"].split("\t")[-1]
                     #print(filename)
                     tagged_words = jieba.posseg.cut(article["text"])
                     words = [word for word, pos in tagged_words]
                     if www == URL1[0]:
-                        with open(file = "china/china_boy/%s.txt" %filename , mode="w", encoding="utf8") as file1:
-                            print(" ".join(words),file=(file1))
-                            #print(" ".join(words).strip())
-                            print("ok")
+                        file = "china/china_boy/%s.txt" %filename
+                        if not os.path.exists(file):
+                            with open(file , mode="w", encoding="utf8") as file1:
+                                print(" ".join(words),file=(file1))
+                                #print(" ".join(words).strip())
+                                print("ok")
+                            if not os.path.getsize(file):
+                                os.remove(file)
                             time.sleep(1)
                     elif www == URL1[1]:
-                        with open(file = "china/china_girl/%s.txt" %filename , mode="w", encoding="utf8") as file2:
-                            print(" ".join(words),file=(file2))
-                            #print(" ".join(words).strip()[:22])
-                            print("ok")
+                        file = "china/china_girl/%s.txt" %filename 
+                        if not os.path.exists(file):
+                            with open(file, mode="w", encoding="utf8") as file2:
+                                print(" ".join(words),file=(file2))
+                                #print(" ".join(words).strip()[:22])
+                                print("ok")
+                            if not os.path.getsize(file):
+                                os.remove(file)
                             time.sleep(1)
                     elif www == URL1[2]:
-                        with open(file = "china/china_team/%s.txt" %filename , mode="w", encoding="utf8") as file3:
-                            print(" ".join(words),file=(file3))
-                            #print(" ".join(words).strip()[:22])
-                            print("ok")
+                        file = "china/china_team/%s.txt" %filename
+                        if not os.path.isfile(file):
+                            with open(file , mode="w", encoding="utf8") as file3:
+                                print(" ".join(words),file=(file3))
+                                #print(" ".join(words).strip()[:22])
+                                print("ok")
+                            if not os.path.getsize(file):
+                                os.remove(file)
                             time.sleep(1)
                     elif www == URL1[3]:
-                        with open(file = "taiwan/taiwan_boy/%s.txt" %filename , mode="w", encoding="utf8") as file4:
-                            print(" ".join(words),file=(file4))
-                            #print(" ".join(words).strip()[:22])
-                            print("ok")
+                        file = "taiwan/taiwan_boy/%s.txt" %filename
+                        if not os.path.isfile(file):
+                            with open(file , mode="w", encoding="utf8") as file4:
+                                print(" ".join(words),file=(file4))
+                                #print(" ".join(words).strip()[:22])
+                                print("ok")
+                            if not os.path.getsize(file):
+                                 os.remove(file)
                             time.sleep(1)
                     elif www == URL1[4]:
-                        with open(file = "taiwan/taiwan_girl/%s.txt" %filename , mode="w", encoding="utf8") as file5:
-                            print(" ".join(words),file=(file5))
-                            #print(" ".join(words).strip()[:22])
-                            print("ok")
+                        file = "taiwan/taiwan_girl/%s.txt" %filename 
+                        if not os.path.isfile(file):
+                            with open(file, mode="w", encoding="utf8") as file5:
+                                print(" ".join(words),file=(file5))
+                                #print(" ".join(words).strip()[:22])
+                                print("ok")
+                            if not os.path.getsize(file):
+                                os.remove(file)
                             time.sleep(1)
                     elif www == URL1[5]:
-                        with open(file = "taiwan/taiwan_team/%s.txt" %filename , mode="w", encoding="utf8") as file6:
-                            print(" ".join(words),file=(file6))
-                            #print(" ".join(words).strip()[:22])  
-                            print("ok")
+                        file = "taiwan/taiwan_team/%s.txt" %filename 
+                        if not os.path.isfile(file):
+                            with open(file, mode="w", encoding="utf8") as file6:
+                                print(" ".join(words),file=(file6))
+                                #print(" ".join(words).strip()[:22])  
+                                print("ok")
+                            if not os.path.getsize(file):
+                                os.remove(file)
                             time.sleep(1)
                     else:
                         break
