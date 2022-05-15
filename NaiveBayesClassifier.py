@@ -1,11 +1,20 @@
+'''相關度加去多餘字'''
 from nltk.corpus.reader import PlaintextCorpusReader
 from nltk.probability import FreqDist
+from string import printable
 import random
 
-n = 300
+import urllib
+#https://raw.githubusercontent.com/stopwords-iso/stopwords-zh/master/stopwords-zh.txt
+file = urllib.request.urlopen(url="file:///C:/Users/%E6%A5%8A%E7%99%BB%E6%A3%8B/Desktop/stop.html")
+stopwords = file.read().decode("utf8").split()
+#print(stopword)
+
+n = 850
 
 china_dir = "china/china_boy/"
 pcr1 = PlaintextCorpusReader(root=china_dir, fileids=".*\.txt")
+
 
 c = "china"
 china_documents = [(pcr1.words(fileid),c) for fileid in pcr1.fileids()]
@@ -27,9 +36,11 @@ random.shuffle(x=documents) # Different results each time?
 import datetime
 print(datetime.datetime.now())
 
+
 N_features = 2000
 all_words = FreqDist(pcr1.words() + pcr2.words())   # 20 seconds...
-word_features = list(all_words)[:N_features]
+aws = [word for word,freq in all_words.most_common(n=n) if word not in stopwords and word[0] not in printable]
+word_features = list(aws)[:N_features]
 
 
 def document_features(document_words):
@@ -51,7 +62,7 @@ classifier = NaiveBayesClassifier.train(train_set)  #分類模型
 from nltk import classify
 print(classify.accuracy(classifier, test_set))
 
-print(classifier.show_most_informative_features(5))
+print(classifier.show_most_informative_features(20))
 
 # What are the most informative training features in your PTT text prediction task? 
 # do they make sense to you?
