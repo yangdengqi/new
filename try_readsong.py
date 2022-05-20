@@ -3,11 +3,11 @@
 import requests
 from bs4 import BeautifulSoup
 
-from selenium import webdriver
+#from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 #pip install jieba
 #import jieba.posseg # https://github.com/fxsjy/jieba
-
+#最終版本
 def song_scraping(url):
     articles = []
     r1 = requests.get(url=URL2)
@@ -42,8 +42,10 @@ URL1 = ["https://www.appleofmyeye.com.tw/geshou/dalunan-all-all.htm",
         "https://www.appleofmyeye.com.tw/geshou/gangtaizuhe-all-all.htm"]
 
 #全部歌手跑完跑到上面列表
-
+import os
+#www=URL1[1]
 for www in URL1:
+#if www == URL1[1]:
     r = requests.get(url=www)
     options = Options()
     options.add_argument("--disable-popup-blocking")
@@ -59,8 +61,9 @@ for www in URL1:
                 #print(articles)
                 
                 for article in articles:    
-                
-                    filename = article["song"].split("\t")[-1]
+                    
+                    filename = article["song"].replace("\t","")
+                    filename = filename.replace("/","")
                     #print(filename)
                     tagged_words = jieba.posseg.cut(article["text"])
                     words = [word for word, pos in tagged_words]
@@ -75,7 +78,7 @@ for www in URL1:
                                 os.remove(file)
                             time.sleep(1)
                     elif www == URL1[1]:
-                        file = "china/china_girl/%s.txt" %filename 
+                        file = "china/china_girl/%s.txt" %filename
                         if not os.path.exists(file):
                             with open(file, mode="w", encoding="utf8") as file2:
                                 print(" ".join(words),file=(file2))
@@ -115,7 +118,7 @@ for www in URL1:
                                 os.remove(file)
                             time.sleep(1)
                     elif www == URL1[5]:
-                        file = "taiwan/taiwan_team/%s.txt" %filename 
+                        file = "taiwan/taiwan_team/%s.txt" %filename
                         if not os.path.isfile(file):
                             with open(file, mode="w", encoding="utf8") as file6:
                                 print(" ".join(words),file=(file6))
