@@ -10,7 +10,7 @@ file = urllib.request.urlopen(url="file:///C:/Users/%E6%A5%8A%E7%99%BB%E6%A3%8B/
 stopwords = file.read().decode("utf8").split()
 #print(stopword)
 
-n = 850
+n = 3000
 
 china_dir = "china/china_boy/"
 pcr1 = PlaintextCorpusReader(root=china_dir, fileids=".*\.txt")
@@ -31,13 +31,13 @@ documents = china_documents + taiwan_documents
 print(documents[0])
 print(documents[-1])
 
-random.shuffle(x=documents) # Different results each time?
+random.shuffle(x=documents) 
 
 import datetime
 print(datetime.datetime.now())
 
 
-N_features = 2000
+N_features = 5000
 all_words = FreqDist(pcr1.words() + pcr2.words())   # 20 seconds...
 aws = [word for word,freq in all_words.most_common(n=n) if word not in stopwords and word[0] not in printable]
 word_features = list(aws)[:N_features]
@@ -63,6 +63,3 @@ from nltk import classify
 print(classify.accuracy(classifier, test_set))
 
 print(classifier.show_most_informative_features(20))
-
-# What are the most informative training features in your PTT text prediction task? 
-# do they make sense to you?
