@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.options import Options
 #pip install jieba
 #import jieba.posseg # https://github.com/fxsjy/jieba
-#最終版本
+
 def song_scraping(url):
     articles = []
     r1 = requests.get(url=URL2)
