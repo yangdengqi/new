@@ -41,6 +41,7 @@ URL1 = ["https://www.appleofmyeye.com.tw/geshou/dalunan-all-all.htm",
         "https://www.appleofmyeye.com.tw/geshou/gangtainv-all-all.htm",
         "https://www.appleofmyeye.com.tw/geshou/gangtaizuhe-all-all.htm"]
 
+
 #全部歌手跑完跑到上面列表
 import os
 #www=URL1[1]
@@ -67,13 +68,44 @@ for www in URL1:
                     #print(filename)
                     tagged_words = jieba.posseg.cut(article["text"])
                     words = [word for word, pos in tagged_words]
+                    """#寫入同個文字檔
+                    with open(file="total_songs.txt", mode="a+", encoding="utf8") as f_song:
+                        print(" ".join(words),file=(f_song))
+                        print("ok")
+                    if www == URL1[0]:
+                        with open(file="china_boy_songs.txt", mode="a+", encoding="utf8") as f_song:
+                            print(" ".join(words),file=(f_song))
+                            print("ok")
+                            if filename == "放不下的愛歌詞.txt":
+                                break
+                    elif www == URL1[1]:
+                        with open(file="china_girl_songs.txt", mode="a+", encoding="utf8") as f_song:
+                            print(" ".join(words),file=(f_song))
+                            print("ok")
+                    elif www == URL1[2]:
+                        with open(file="china_team_songs.txt", mode="a+", encoding="utf8") as f_song:
+                            print(" ".join(words),file=(f_song))
+                            print("ok")
+                    elif www == URL1[3]:
+                        with open(file="taiwan_boy_songs.txt", mode="a+", encoding="utf8") as f_song:
+                            print(" ".join(words),file=(f_song))
+                            print("ok")
+                    if www == URL1[0]:
+                        with open(file="taiwan_girl_songs.txt", mode="a+", encoding="utf8") as f_song:
+                            print(" ".join(words),file=(f_song))
+                            print("ok")
+                    elif www == URL1[1]:
+                        with open(file="taiwan_team_songs.txt", mode="a+", encoding="utf8") as f_song:
+                            print(" ".join(words),file=(f_song))
+                            print("ok")"""
+                    
+                    #寫入不同文字檔        
                     if www == URL1[0]:
                         file = "china/china_boy/%s.txt" %filename
                         if not os.path.exists(file):
                             with open(file , mode="w", encoding="utf8") as file1:
                                 print(" ".join(words),file=(file1))
                                 #print(" ".join(words).strip())
-                                print("ok")
                             if not os.path.getsize(file):
                                 os.remove(file)
                             time.sleep(1)
